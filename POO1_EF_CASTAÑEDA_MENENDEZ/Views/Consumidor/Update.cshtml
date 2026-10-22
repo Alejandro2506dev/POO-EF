@@ -1,0 +1,38 @@
+@model Consumidor
+@{
+    ViewBag.Title = "Actualizar consumidor";
+}
+
+<h2>Actualizar consumidor</h2>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div>@ViewBag.Mensaje</div>
+}
+
+@using (Html.BeginForm("Update", "Consumidor", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.dnicont, "DNI")
+        @Html.DisplayFor(model => model.dnicont, new { @class = "form-control" })
+        @Html.HiddenFor(model => model.dnicont)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.nomcont, "Nombre")
+        @Html.TextBoxFor(model => model.nomcont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.apecont, "Apellido")
+        @Html.TextBoxFor(model => model.apecont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.emailcont, "Email")
+        @Html.TextBoxFor(model => model.emailcont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.nompais, "Pais")
+        @Html.TextBoxFor(model => model.nompais, new { @class = "form-control", maxlength = 20 })
+    </div>
+    <button type="submit">Actualizar</button>
+    @Html.ActionLink("Volver", "Index", "Consumidor")
+}

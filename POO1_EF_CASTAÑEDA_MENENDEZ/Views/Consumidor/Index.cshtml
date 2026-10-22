@@ -1,0 +1,55 @@
+@model List<Consumidor>
+@{
+    ViewBag.Title = "Consumidores";
+}
+
+<h2>Consumidores</h2>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div>@ViewBag.Mensaje</div>
+}
+
+<p>
+    @Html.ActionLink("Registrar consumidor", "Create", "Consumidor")
+</p>
+
+@if (!Model.Any())
+{
+    <div>No hay registros</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Pais</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var consumidor in Model)
+            {
+                <tr>
+                    <td>@consumidor.dnicont</td>
+                    <td>@consumidor.nomcont</td>
+                    <td>@consumidor.apecont</td>
+                    <td>@consumidor.emailcont</td>
+                    <td>@(!string.IsNullOrEmpty(consumidor.nompais) ? consumidor.nompais : consumidor.idpais)</td>
+                    <td>
+                        @Html.ActionLink("Editar", "Update", "Consumidor", new { dnicont = consumidor.dnicont }, null)
+                        @using (Html.BeginForm("Delete", "Consumidor", FormMethod.Post))
+                        {
+                            @Html.Hidden("dnicont", consumidor.dnicont)
+                            <input type="submit" value="Eliminar" />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

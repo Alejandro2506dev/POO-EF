@@ -1,0 +1,37 @@
+@model Consumidor
+@{
+    ViewBag.Title = "Registrar consumidor";
+}
+
+<h2>Registrar consumidor</h2>
+
+@if (ViewBag.Mensaje != null)
+{
+    <div>@ViewBag.Mensaje</div>
+}
+
+@using (Html.BeginForm("Create", "Consumidor", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.dnicont, "DNI")
+        @Html.TextBoxFor(model => model.dnicont, new { @class = "form-control", maxlength = 8 })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.nomcont, "Nombre")
+        @Html.TextBoxFor(model => model.nomcont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.apecont, "Apellido")
+        @Html.TextBoxFor(model => model.apecont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.emailcont, "Email")
+        @Html.TextBoxFor(model => model.emailcont, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.nompais, "Pais")
+        @Html.TextBoxFor(model => model.nompais, new { @class = "form-control", maxlength = 20, placeholder = "Peru, Espana, Argentina..." })
+    </div>
+    <button type="submit">Registrar</button>
+    @Html.ActionLink("Volver", "Index", "Consumidor")
+}
