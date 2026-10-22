@@ -3,10 +3,17 @@
 -- Examen Final - Programacion Orientada a Objetos / Entity Framework
 -- Tablas, restricciones y procedimientos almacenados
 -- Motor: SQL Server Express (instancia SQLEXPRESS)
+--
+-- Este script es idempotente: se puede volver a ejecutar sin romper la base.
+-- Generado a partir de la base de datos en ejecucion.
 --------------------------------------------------------------------------------
 
-CREATE DATABASE ExamenFinal
+IF DB_ID('ExamenFinal') IS NULL
+BEGIN
+    CREATE DATABASE ExamenFinal
+END
 GO
+
 USE ExamenFinal
 GO
 
@@ -14,12 +21,14 @@ GO
 -- TABLAS
 --------------------------------------------------------------------------------
 
+IF OBJECT_ID('tb_paises', 'U') IS NULL
 CREATE TABLE tb_paises (
     idpais char(3) PRIMARY KEY,
     nompais varchar(20)
 )
 GO
 
+IF OBJECT_ID('tb_consumidor', 'U') IS NULL
 CREATE TABLE tb_consumidor (
     dnicont char(8) PRIMARY KEY,
     nomcont varchar(40) NOT NULL,
@@ -33,7 +42,7 @@ GO
 -- PROCEDIMIENTOS ALMACENADOS
 --------------------------------------------------------------------------------
 
-CREATE PROC usp_agrega_consumidor
+CREATE OR ALTER PROC usp_agrega_consumidor
 @dnicont char(8),
 @nomcont varchar(40),
 @apecont varchar(40),
@@ -60,7 +69,7 @@ END
 
 GO
 
-CREATE PROCEDURE usp_listar_consumidor
+CREATE OR ALTER PROCEDURE usp_listar_consumidor
 AS
 BEGIN
     SELECT c.dnicont, c.nomcont, c.apecont, c.emailcont, c.idpais, p.nompais
@@ -69,7 +78,7 @@ BEGIN
 END
 GO
 
-CREATE PROC usp_eliminar_consumidor
+CREATE OR ALTER PROC usp_eliminar_consumidor
 @dnicont char(8),
 @mensaje varchar(100) OUTPUT
 AS
@@ -86,7 +95,7 @@ END
 
 GO
 
-CREATE PROC usp_actualiza_consumidor
+CREATE OR ALTER PROC usp_actualiza_consumidor
 @dnicont char(8),
 @nomcont varchar(40),
 @apecont varchar(40),
@@ -143,7 +152,7 @@ END
 
 GO
 
-CREATE PROCEDURE usp_obtener_consumidor
+CREATE OR ALTER PROCEDURE usp_obtener_consumidor
 @dnicont char(8),
 @mensaje varchar(100) OUTPUT
 AS
@@ -164,7 +173,7 @@ BEGIN
 END
 GO
 
-CREATE PROC usp_registrar_pais
+CREATE OR ALTER PROC usp_registrar_pais
 @nompais varchar(20),
 @idpais char(3) OUTPUT,
 @mensaje varchar(100) OUTPUT
@@ -217,7 +226,10 @@ GO
 -- DATOS INICIALES
 --------------------------------------------------------------------------------
 
-INSERT INTO tb_paises (idpais, nompais)
-VALUES ('PER', 'Peru')
+IF NOT EXISTS (SELECT 1 FROM tb_paises WHERE idpais = 'PER')
+BEGIN
+    INSERT INTO tb_paises (idpais, nompais)
+    VALUES ('PER', N'Perú')
+END
 GO
 
